@@ -1,41 +1,39 @@
-import * as types from './../constants/actionType';
+import * as Types from './../constants/actionType';
 var data = JSON.parse(localStorage.getItem('CART'));
-var initialState = [
-    {
-        product : {
-            id: 1,
-            name: 'NodeJS',
-            image: 'https://cdn2.iconfinder.com/data/icons/nodejs-1/512/nodejs-512.png',
-            description: 'Code NodeJS',
-            price: 500,
-            inventory: 10,
-            rating: 4
-        },
-        quantity: 5
-    },
-    {
-        product : {
-            id: 3,
-            name: 'ReactJS',
-            image: 'https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png',
-            description: 'Code ReactJS',
-            price: 600,
-            inventory: 5,
-            rating: 5
-        },
-        quantity: 3
-    }
-];
+var initialState = data ? data : [];
 
 const cart = (state = initialState, action) => {
+    var {product, quantity} = action;
+    var index = -1;
     switch (action.type) {
-        case types.ADD_TO_CART:
-            console.log(action);
-            
+        case Types.ADD_TO_CART:
+            index = findProductInCart(state, product); //state các sp trong gh, product là sp đang thêm
+            if (index!==-1){
+                state[index].quantity += quantity; 
+            }else{
+                state.push({
+                    product,
+                    quantity,
+                });
+            }
+            localStorage.setItem('CART', JSON.stringify(state));
             return [...state];
         default:
             return [...state];
     }
+}
+
+ var findProductInCart = (cart, product) => {
+    var index = -1;
+    if (cart.length > 0){
+        for (var i = 0; i < cart.length ; i ++){
+            if(cart[i].product.id === product.id){
+                index = i;
+                break; //thoát khỏi vòng lặp
+            }
+        }
+    }
+    return index;
 }
 
 export default cart;
