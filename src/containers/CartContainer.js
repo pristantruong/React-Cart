@@ -5,23 +5,24 @@ import Cart from './../components/Cart';
 import * as Message from './../constants/Message';
 import CartItem from './../components/CartItem';
 import CartResult from './../components/CartResult';
-import {actDeleteProductInCart} from './../actions/index'; //chỉ import 1 cái
+import {actDeleteProductInCart, actChangeMessage} from './../actions/index'; //chỉ import 1 cái
 
 class CartContainer extends Component {
 
     showCartItem = (cart) => {
-        var {onDeleteProductInCart} = this.props;
+        var {onDeleteProductInCart, onChangeMessage} = this.props;
         var result = <tr>
                         <td>{Message.MSG_CART_EMPTY}</td>
                     </tr>
         if (cart.length > 0){
             result = cart.map((item, index) => {
                 return (
-                    <CartItem 
+                    <CartItem //truyền vào cart item để cart item nhận được các props
                         key = { index } 
                         item = { item }
                         index = { index }
                         onDeleteProductInCart={onDeleteProductInCart}
+                        onChangeMessage={onChangeMessage}
                     />
                 )
             })
@@ -73,6 +74,9 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
         onDeleteProductInCart: (product) => { //lấy trong actionType
             dispatch(actDeleteProductInCart(product));
+        },
+        onChangeMessage: (message) => {
+            dispatch(actChangeMessage(message));
         }
     }
 }
