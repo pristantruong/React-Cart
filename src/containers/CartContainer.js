@@ -47,7 +47,7 @@ class CartContainer extends Component {
                  { this.showTotalAmount(cart) }
             </Cart>
         );
-    }ta
+    }
 }
 
 CartContainer.propTypes = {
