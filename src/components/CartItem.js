@@ -3,13 +3,6 @@ import * as Message from './../constants/Message';
 
 class CartItem extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            quantity: 1, 
-        }
-    }
-
     showSubTotal = (price, quantity) => {
         return price * quantity;
     }
@@ -20,20 +13,17 @@ class CartItem extends Component {
         onChangeMessage(Message.MSG_DELETE_PRODUCT_IN_CART_SUCCESS);
     }
 
-    onUpdateQuantity = (product, quantity) => {
+    onUpdateQuantity = (product, quantity) => { 
         if (quantity > 0){
-            this.setState({
-                quantity: quantity
-            });
-            this.props.onUpdateProductInCart(product, quantity);
+            var {onUpdateProductInCart,onChangeMessage} = this.props
+            onUpdateProductInCart(product, quantity);
+            onChangeMessage(Message.MSG_UPDATE_CART_SUCCESS);
         }
     }
 
     render() {
         var { item } = this.props;
-        var  {quantity} = item.quantity ? item : this.state;
-        console.log(quantity);
-        
+        var  {quantity} = item; 
         return (
             <tr>
                 <th scope="row">
@@ -47,7 +37,7 @@ class CartItem extends Component {
                 </td>
                 <td>{item.product.price}$</td>
                 <td className="center-on-small-only">
-                    <span className="qty">{item.quantity} </span>
+                    <span className="qty">{quantity} </span>
                     <div className="btn-group radio-group" data-toggle="buttons">
                         <label 
                             className="btn btn-sm btn-primary btn-rounded waves-effect waves-light"
